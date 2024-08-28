@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="HealthCheckSuite">
+	<test name="HealthCheckTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.HealthCheckTest"/>
+		</classes>
+	</test>
+</suite>

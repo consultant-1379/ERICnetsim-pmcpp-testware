@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+          <!-- XML Schema Generated from XML Document on Fri Jan 20 2017 18:50:43 GMT+0530 (India Standard Time) -->
+          <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+       <xs:element name="SimulationData">
+              <xs:complexType>
+                     <xs:sequence>
+                               <xs:element name="Simulation" maxOccurs="unbounded">
+                                      <xs:complexType>
+                                             <xs:sequence>
+                                                        <xs:element name="network" type="xs:string"></xs:element>
+                                                        <xs:element name="node_type" type="xs:string"></xs:element>
+                                                        <xs:element name="node_release" type="xs:string"></xs:element>
+                                                        <xs:element name="sim_mim_ver" type="xs:string"></xs:element>
+                                                        <xs:element name="no_of_nodes" type="xs:int"></xs:element>
+                                                        <xs:element name="node_per_cell" type="xs:string"></xs:element>
+                                                        <xs:element name="node_prefix" type="xs:string"></xs:element>
+                                                        <xs:element name="nb_iot_cell" type="xs:string"></xs:element>
+                                                        <xs:element name="enableBulkCmData" type="xs:string"></xs:element>
+                                                        <xs:element name="oss_dir" type="xs:string"></xs:element>
+                                                        <xs:element name="sim_name" type="xs:string"></xs:element>
+                                                </xs:sequence>
+                                             <xs:attribute name="name" type="xs:string"></xs:attribute>
+                                         </xs:complexType>
+                                </xs:element>
+                        </xs:sequence>
+                 </xs:complexType>
+          </xs:element>
+   </xs:schema>

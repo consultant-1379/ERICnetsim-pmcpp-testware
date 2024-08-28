@@ -1,0 +1,2 @@
+commands,expectedExitCode
+/netsim_users/pms/bin/limitbwtest.sh,0

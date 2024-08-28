@@ -1,0 +1,4 @@
+command,expectedExitCode
+fab -D -H ieatnetsimv5056-22.athtem.eei.ericsson.se -f ERICTAFnetsimpmcpp_CXP9035026/src/main/python/auto_rollout/fabtasks.py taf_verify_deleted_directory,0
+fab -D -H ieatnetsimv5056-22.athtem.eei.ericsson.se -f ERICTAFnetsimpmcpp_CXP9035026/src/main/python/auto_rollout/fabtasks.py verifyFileFormat,0
+fab -D -H ieatnetsimv5056-22.athtem.eei.ericsson.se -f ERICTAFnetsimpmcpp_CXP9035026/src/main/python/auto_rollout/fabtasks.py taf_check_logrotate,0

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="LimitBandwidthSuite">
+    <test name="LimitBandwidthTest">
+        <classes>
+            <class name="com.ericsson.cifwk.netsim.test.cases.LimitBandwidthTest"/>
+        </classes>
+    </test>
+</suite>

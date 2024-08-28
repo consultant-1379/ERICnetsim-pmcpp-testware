@@ -1,0 +1,425 @@
+#!/bin/sh
+
+NSS_RELEASE=${release}
+ENV=VM
+
+<%text>#### DEPLOYMENT TYPE #####</%text>
+TYPE="${deploymentType}"
+
+<%text>#### NETSIM SERVERS #####</%text>
+SERVERS="${servers}"
+
+<%text>############ SIMULATION LISTS #############</%text>
+<%text># LTE, SAPC, SPITFIRE, MGW, TCU, RNC LIST</%text>
+LIST="${simulation_list}"
+<%text># SGSN MME LIST</%text>
+MME_SIM_LIST="${mme_list}"
+
+HOST=`hostname`
+HOST_NAME=`echo $HOST | sed s/-/_/g`
+
+PLAYBACK_SIM_LIST="${playback_sim_list}"
+
+edeStatsCheck="${edeStatsCheck}"
+OSS_enabled="${oss_enabled}"
+
+<%text>######### PREDEFINED SCANNERS ############</%text>
+PREDEFINED_STATS_SCANNER_STATE=SUSPENDED
+
+<%text>############ TIMEZONE SETTINGS ############</%text>
+SGSN_TZ="GB-Eire"
+WMG_TZ="GB-Eire"
+ROUTER_TZ="GB-Eire"
+EPG_TZ="GB-Eire"
+DSC_TZ="GB-Eire"
+PCC_PCG_TZ="GB-Eire"
+VNSDS_TZ="GB-Eire"
+<%text>#Node Types in SC_UDM : CCSM, CCDM, CCRC, CCPC, SC, CCES</%text>
+SC_UDM_TZ="GB-Eire"
+
+<%text>############ ROP INTERVAL ###############</%text>
+% if deploymentType.startswith('NRM'):
+STATS_WORKLOAD_LIST="15:ALL"
+RECORDING_WORKLOAD_LIST="15:ALL"
+% elif deploymentType.startswith('DO'):
+STATS_WORKLOAD_LIST="15:ALL"
+RECORDING_WORKLOAD_LIST="15:ALL"
+% elif deploymentType == 'MD_1':
+STATS_WORKLOAD_LIST="15:ALL 5:ALL"
+RECORDING_WORKLOAD_LIST="15:ALL 1:SGSN"
+% else:
+STATS_WORKLOAD_LIST="1:ALL 15:ALL"
+RECORDING_WORKLOAD_LIST="1:ALL 15:ALL"
+% endif
+
+<%text>############ NE JOB GROUP FORMAT ###############</%text>
+UPDATE_SGSN_ROP_JOB_GROUP_INFO="YES"
+SGSN_DEFINED_ROP_JOB_GROUP_INFO="1:ONE_MIN 5:FIVE_MIN 30:THIRTY_MIN 60:ONE_HOUR 720:TWELVE_HOUR 1440:ONE_DAY"
+
+% if deploymentType.startswith('NRM'):
+<%text>#### Cell Type setting ####</%text>
+<%text>#### DEFAULT is type C ####</%text>
+netsim_type=continues
+% endif
+
+<%text>#### LIMITBANDWIDTH #####</%text>
+SET_BANDWIDTH_LIMITING=ON
+BANDWIDTH_LTE_MSRBS_V2=3072
+BANDWIDTH_FIVEGRADIONODE=3072
+BANDWIDTH_BSC=4096
+BANDWIDTH_TCU02=128
+BANDWIDTH_SIU02=128
+BANDWIDTH_HLR=512
+BANDWIDTH_MSC=4096
+BANDWIDTH_UDM=62
+BANDWIDTH_UDR=62
+BANDWIDTH_NRF=62
+BANDWIDTH_NSSF=62
+BANDWIDTH_BSC_MSRBS_V2=3072
+BANDWIDTH_BSP=512
+BANDWIDTH_ERSN=1024
+BANDWIDTH_ERS_SN_ESC=1024
+BANDWIDTH_ERS_SN_SCU=1024
+BANDWIDTH_VTIF=24576
+BANDWIDTH_MRS=1024
+BANDWIDTH_EIR_FE=512
+BANDWIDTH_CUDB=524
+BANDWIDTH_AFG=512
+BANDWIDTH_GNODEBRADIO=3072
+BANDWIDTH_TSP=512
+BANDWIDTH_ML=128
+BANDWIDTH_SCEF=3686
+% if deploymentType.startswith('NRM'):
+BANDWIDTH_RNC_1=16384
+BANDWIDTH_RNC_2=16384
+BANDWIDTH_RNC_3=16384
+BANDWIDTH_RNC_4=16384
+BANDWIDTH_RNC_5=16384
+BANDWIDTH_RNC_6=16384
+BANDWIDTH_WRAN_MSRBS_V2=1024
+BANDWIDTH_RBS=1024
+BANDWIDTH_ERBS=3072
+BANDWIDTH_MSRBS_V1=3072
+BANDWIDTH_MGW=1024
+BANDWIDTH_SPITFIRE=1024
+BANDWIDTH_EPG=1024
+BANDWIDTH_MTAS=1024
+BANDWIDTH_DSC=1024
+BANDWIDTH_SBGIS=3277
+BANDWIDTH_FRONTHAUL=1024
+BANDWIDTH_R6672=1024
+BANDWIDTH_R6274=1024
+BANDWIDTH_R6675=1024
+BANDWIDTH_VDU=25600
+BANDWIDTH_VCU_UP=25600
+BANDWIDTH_VCU_CP=25600
+NETWORK_DELAY=30
+% elif deploymentType.startswith('DO'):
+BANDWIDTH_RNC_1=16384
+BANDWIDTH_RNC_2=16384
+BANDWIDTH_RNC_3=16384
+BANDWIDTH_RNC_4=16384
+BANDWIDTH_RNC_5=16384
+BANDWIDTH_WRAN_MSRBS_V2=1024
+BANDWIDTH_RBS=1024
+BANDWIDTH_ERBS=3072
+BANDWIDTH_MSRBS_V1=3072
+BANDWIDTH_MGW=1024
+BANDWIDTH_SPITFIRE=1024
+BANDWIDTH_EPG=1024
+BANDWIDTH_MTAS=1024
+BANDWIDTH_DSC=1024
+BANDWIDTH_SBGIS=3277
+BANDWIDTH_FRONTHAUL=1024
+BANDWIDTH_R6672=1024
+BANDWIDTH_R6274=1024
+BANDWIDTH_R6675=1024
+BANDWIDTH_VDU=3072
+NETWORK_DELAY=30
+% elif deploymentType == 'MD_1':
+BANDWIDTH_MTAS=100000
+BANDWIDTH_VCU_UP=102400
+BANDWIDTH_VCU_CP=102400
+BANDWIDTH_HSS_FE=512
+BANDWIDTH_ERBS=3072
+BANDWIDTH_R6672=1024
+BANDWIDTH_R6675=1024
+BANDWIDTH_SBGIS=10240
+BANDWIDTH_RNC_2=16384
+BANDWIDTH_RBS=16384
+BANDWIDTH_WRAN_MSRBS_V2=3072
+BANDWIDTH_VDU=3072
+NETWORK_DELAY=30
+% else:
+BANDWIDTH_ADP=512
+BANDWIDTH_RNC_1=29696
+BANDWIDTH_RNC_2=29696
+BANDWIDTH_RNC_3=29696
+BANDWIDTH_RNC_4=29696
+BANDWIDTH_RNC_5=29696
+BANDWIDTH_WRAN_MSRBS_V2=3072
+BANDWIDTH_RBS=3072
+BANDWIDTH_VNSDS=512
+BANDWIDTH_CONTROLLER6610=1024
+BANDWIDTH_VCU_UP=3072
+BANDWIDTH_VCU_CP=3072
+BANDWIDTH_VDU=3072
+BANDWIDTH_O1=3072
+BANDWIDTH_R6673=1024
+BANDWIDTH_R6676=1024
+BANDWIDTH_R6678=1024
+BANDWIDTH_RDM=3072
+NETWORK_DELAY=5
+% endif
+
+<%text>########## rmPmFiles retention values ########</%text>
+% if deploymentType.startswith('NRM'):
+XML_RETENTION=24
+BIN_RETENTION=1
+% elif deploymentType.startswith('DO'):
+BIN_RETENTION=1
+XML_RETENTION=1
+% elif deploymentType == 'MD_1':
+XML_RETENTION=7
+BIN_RETENTION=1
+% else:
+XML_RETENTION=1
+BIN_RETENTION=1
+% endif
+
+<%text>########## CELL CONFIGURATION LIST  ##########</%text>
+ERBS_CELLS_CONFIG_LIST="1 3 6 12"
+
+<%text>########## NRAT DEFAULT CELL COUNT  ##########</%text>
+% if deploymentType == 'NRM6.2' or  deploymentType == 'NRM6.2.1' :    
+DEFAULT_NRAT_CELL_COUNT=4
+% else :
+DEFAULT_NRAT_CELL_COUNT=3
+% endif
+
+<%text>############ 5GRADIONODE CELLTRACE CONFIGURATION ############</%text>
+FIVEGRADIONODE_EventFileType="1_1:Low:True 1_2:Low:False 1_3:High:True"
+FIVEGRADIONODE_EventHandler="1"
+FIVEGRADIONODE_EventProducer="CUCP CUUP DU"
+
+% if deploymentType != 'DO':
+GNODEBRADIO_EventFileType="1_1:Low:True 1_2:Low:False 1_3:High:True"
+GNODEBRADIO_EventHandler="1"
+GNODEBRADIO_EventProducer="CUCP CUUP DU"
+
+% if deploymentType == 'NRM6.2.1':
+<%text>############ NRAT MODE UE CONFIGURATION FOR NRM6.2.1 DEPLOYMENT ############</%text>
+NRAT_ONE_MIN_UE_COUNT=1
+NRAT_FIFTEEN_MIN_UE_COUNT=1
+NRAT_LTE_UETRACE_LIST="154kb_ue_trace.gz:NR01:1:15:1 154kb_ue_trace.gz:NR02:1:5:1"
+% else:
+
+<%text>############ NRAT MODE UE CONFIGURATION FOR NSS DEPLOYMENT ############</%text>
+NRAT_ONE_MIN_UE_COUNT=1
+NRAT_FIFTEEN_MIN_UE_COUNT=16
+NRAT_LTE_UETRACE_LIST="154kb_ue_trace.gz:NR01:1:15:1 154kb_ue_trace.gz:NR02:1:5:1"
+
+% endif
+
+<%text>############ VALUE SHOULD BE PROVIDED WITH START AND END VALUE, AS IT IS RANGE ############</%text>
+UE_DU_INSTANCE_VALUE=1
+UE_CUCP_INSTANCE_VALUE=999
+UE_CUUP_INSTANCE_VALUE=8
+
+% endif
+
+<%text>############ Celltrace and UETRACE file generation ############</%text>
+<%text>#FORMAT = <trace filename>:<Sim Name>:<start index>:<Number of nodes>:<UETRACE reference number start index>:<Total number of files></%text>
+% if deploymentType.startswith('NRM') or deploymentType == 'DO':
+    % if deploymentType == 'NRM1.2':
+LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE10:1:160:1:160 600kb_ue_trace.gz:LTE20:1:160:161:160 600kb_ue_trace.gz:LTE30:1:159:321:159 2.8MB_ue_trace.gz:LTE30:1:1:480:1"
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE09:1:20:1:20"
+    % elif deploymentType == 'NRM4':
+LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE05:1:160:161:160 600kb_ue_trace.gz:LTE04:1:160:1:160"
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE20:1:159:321:159 2.8MB_ue_trace.gz:LTE20:1:1:480:1 600kb_ue_trace.gz:LTE33:1:20:1:20"
+    % elif deploymentType == 'NRM4.1':
+LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE03:1:80:1:80 600kb_ue_trace.gz:LTE04:1:80:81:80 600kb_ue_trace.gz:LTE27:1:80:161:80 600kb_ue_trace.gz:LTE28:1:80:241:80 600kb_ue_trace.gz:LTE29:1:80:321:80 600kb_ue_trace.gz:LTE30:1:80:401:80"
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE35:1:20:481:20"
+    % elif deploymentType == 'NRM5' or deploymentType == 'NRM6' :
+LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE05:1:160:161:160"
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE04:1:160:1:160 600kb_ue_trace.gz:LTE20:1:159:321:159 2.8MB_ue_trace.gz:LTE20:1:1:480:1 600kb_ue_trace.gz:LTE33:1:20:1:20"
+    % elif deploymentType == 'NRM5.1':
+LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE05:1:80:1:80 600kb_ue_trace.gz:LTE06:1:80:81:80  600kb_ue_trace.gz:LTE07:1:20:161:20"
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE09:1:80:1:80 600kb_ue_trace.gz:LTE10:1:80:81:80 600kb_ue_trace.gz:LTE20:1:79:161:79 2.8MB_ue_trace.gz:LTE20:1:1:241:1 600kb_ue_trace.gz:LTE21:1:80:321:80"
+    % elif deploymentType == 'NRM6.1':
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE15:1:80:1:80 600kb_ue_trace.gz:LTE16:1:80:81:80 600kb_ue_trace.gz:LTE88:1:80:161:80 600kb_ue_trace.gz:LTE20:1:79:241:79 2.8MB_ue_trace.gz:LTE20:1:1:320:1 600kb_ue_trace.gz:LTE64:1:80:321:80 600kb_ue_trace.gz:LTE67:1:80:401:80 600kb_ue_trace.gz:LTE68:1:20:481:20"
+    % elif deploymentType == 'NRM6.2':
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE58:1:80:1:80 600kb_ue_trace.gz:LTE60:1:80:81:80 600kb_ue_trace.gz:LTE22:1:80:161:80 600kb_ue_trace.gz:LTE30:1:79:241:79 2.8MB_ue_trace.gz:LTE30:1:1:320:1 600kb_ue_trace.gz:LTE94:1:80:321:80 600kb_ue_trace.gz:LTE96:1:80:401:80 600kb_ue_trace.gz:LTE70:1:20:481:20"
+    % elif deploymentType == 'NRM6.2.1':
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE01:1:80:1:80 600kb_ue_trace.gz:LTE09:1:80:81:80 600kb_ue_trace.gz:LTE10:1:80:161:80 600kb_ue_trace.gz:LTE22:1:79:241:79 2.8MB_ue_trace.gz:LTE22:1:1:320:1 600kb_ue_trace.gz:LTE21:1:80:321:80 600kb_ue_trace.gz:LTE30:1:80:401:80"
+    % elif deploymentType == 'NRM6.3':
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE09:1:80:1:80 600kb_ue_trace.gz:LTE45:1:80:81:80 600kb_ue_trace.gz:LTE83:1:80:161:80 600kb_ue_trace.gz:LTE26:1:79:241:79 2.8MB_ue_trace.gz:LTE26:1:1:320:1 600kb_ue_trace.gz:LTE50:1:80:321:80 600kb_ue_trace.gz:LTE86:1:80:401:80 600kb_ue_trace.gz:LTE97:1:20:481:20"   
+    % elif deploymentType == 'NRM6.4':
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE28:1:40:1:40 600kb_ue_trace.gz:LTE32:1:40:41:40 600kb_ue_trace.gz:LTE36:1:40:81:40 600kb_ue_trace.gz:LTE40:1:40:121:40 600kb_ue_trace.gz:LTE44:1:40:161:40 600kb_ue_trace.gz:LTE48:1:40:201:40 600kb_ue_trace.gz:LTE52:1:39:241:39 2.8MB_ue_trace.gz:LTE52:1:1:280:1 600kb_ue_trace.gz:LTE87:1:40:281:40 600kb_ue_trace.gz:LTE83:1:40:321:40 600kb_ue_trace.gz:LTE79:1:40:361:40 600kb_ue_trace.gz:LTE76:1:40:401:40 600kb_ue_trace.gz:LTE72:1:40:441:40 600kb_ue_trace.gz:LTE68:1:20:481:20"
+
+ % else:
+LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE10:1:160:1:160 600kb_ue_trace.gz:LTE20:1:160:161:160"
+MSRBS_V2_LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE33:1:159:321:159 2.8MB_ue_trace.gz:LTE33:1:1:480:1 600kb_ue_trace.gz:LTE17:1:20:1:20"
+    % endif
+
+    % if deploymentType == 'NRM6.2' or deploymentType == 'NRM6.2.1' or  deploymentType == 'NRM6.3' or deploymentType == 'NRM6.4':
+LTE_CELLTRACE_LIST="celltrace_3MB.bin.gz:1:1 celltrace_1MB.bin.gz:1:3"
+MSRBS_V2_LTE_CELLTRACE_LIST="celltrace_3MB.bin.gz:1:1 celltrace_1MB.bin.gz:1:3"
+    % else:
+LTE_CELLTRACE_LIST="celltrace_2304K.bin.gz:1:1 celltrace_768K.bin.gz:1:3"
+MSRBS_V2_LTE_CELLTRACE_LIST="celltrace_2304K.bin.gz:1:1 celltrace_768K.bin.gz:1:3"
+    % endif
+MME_UETRACE_LIST="mme_uetrace:FIV1:15"
+MME_CTUM_LIST="mme_ctum:15"
+MME_EBS_FILE_LIST="ebs_1 ebs_2 ebs_3 ebs_4"
+
+% if deploymentType == 'NRM5.1':
+<%text>############ 45Mb file and Bandwidth value of 14Mbps will be set for this 8k BSC node M48B96 in NRM5.1############</%text>
+EIGHT_K_BSC="M48B96"
+BANDWIDTH_M48B96=20480
+% endif
+
+<%text>############ 19Mb Celltrace LTE file name ############</%text>
+LTE_CELLTRACE_19MB_FILE="celltrace_19M.bin.gz"
+<%text>########### 19Mb Celltrace file will be generated for this node ############</%text>
+LTE_CELLTRACE_19MB_NODE="LTE01ERBS00001"
+
+<%text>############ 30Mb Celltrace LTE file name ############</%text>
+LTE_CELLTRACE_30MB_FILE="celltrace_30M.bin.gz"
+<%text>########### 30Mb Celltrace file will be generated for this node ############</%text>
+    % if deploymentType == 'NRM6.2' or deploymentType == 'NRM6.2.1' or deploymentType == 'NRM6.3' or deploymentType =='NRM6.4':
+LTE_CELLTRACE_30MB_NODE="LTE30dg2ERBS00001"
+    % else:
+LTE_CELLTRACE_30MB_NODE="LTE15dg2ERBS00001"
+    % endif
+
+<%text>############ 30Mb Celltrace NRAT file name ############</%text>
+NRAT_CELLTRACE_30MB_FILE="celltrace_NRAT_30M.bin.gz"
+<%text>########### 30Mb Celltrace file will be generated for this node ############</%text>
+NRAT_CELLTRACE_30MB_NODE="NR76gNodeBRadio00001"
+% elif deploymentType == 'MD_1':
+LTE_CELLTRACE_LIST="celltrace_256k.bin.gz:1:1 celltrace_768K.bin.gz:1:3"
+LTE_UETRACE_LIST="600kb_ue_trace.gz:LTE09:1:80:1:80 600kb_ue_trace.gz:LTE13:1:80:81:80 600kb_ue_trace.gz:LTE03:1:40:161:40"
+% else:
+MSRBS_V2_LTE_UETRACE_LIST="154kb_ue_trace.gz:LTE01:1:4:1:64 154kb_ue_trace.gz:LTE03:1:40:129:128 154kb_ue_trace.gz:LTE04:1:40:257:256"
+LTE_UETRACE_LIST="154kb_ue_trace.gz:LTE02:1:40:65:64 154kb_ue_trace.gz:LTE05:1:16:513:16"
+VTF_UETRACE_LIST="154kb_ue_trace.gz:VTFRadioNode:1:45:1:720"
+LTE_CELLTRACE_LIST="celltrace_256k.bin.gz:1:1 celltrace_4.7M.bin.gz:1:3"
+MSRBS_V1_LTE_CELLTRACE_LIST="celltrace_256k.bin.gz:JG1:1 celltrace_256k.bin.gz:JG2:1 celltrace_4.7M.bin.gz:JG3:1 celltrace_256k.bin.gz:JG1:2 celltrace_256k.bin.gz:JG2:2 celltrace_4.7M.bin.gz:JG3:2"
+MSRBS_V2_LTE_CELLTRACE_LIST="celltrace_256k.bin.gz:1:1 celltrace_4.7M.bin.gz:1:3"
+VTF_CELLTRACE_LIST="celltrace_256k.bin.gz:1:1 celltrace_4.7M.bin.gz:1:3"
+% endif
+
+% if deploymentType == 'MD_1':
+<%text>############ 45Mb file and Bandwidth value of 14Mbps will be set for this 8k BSC node M48B96 in NRM5.1############</%text>
+EIGHT_K_BSC="M48B96"
+BANDWIDTH_M48B96=14336
+% endif
+
+<%text>################### PM FILE LOCATIONS ###################</%text>
+% for NE_TYPE, pm_file_path in pm_file_locations.iteritems():
+      <% NE_TYPE = NE_TYPE.replace("-", "_") %> \
+      <% stats_file_path = pm_file_path[0] %> \
+      <% trace_file_path = pm_file_path[1] %> \
+      <% pd_file_path = pm_file_path[2] %>
+      % if stats_file_path != "/c/pm_data/":
+${NE_TYPE}_PM_FileLocation=${stats_file_path}
+      % endif
+      % if trace_file_path != "/c/pm_data/":
+${NE_TYPE}_PMEvent_FileLocation=${trace_file_path}\
+      % endif
+      % if pd_file_path != "/c/pm_data/":
+${NE_TYPE}_PMPD_FileLocation=${pd_file_path}\
+      % endif
+% endfor
+
+
+% if deploymentType == 'MD_1':
+<%text>######################## CellTrace for MMEs ########################</%text>
+MME_EBS_FILE_LIST="1:ebs_1,ebs_2,ebs_3,ebs_4 15:ebs_5,ebs_6,ebs_7,ebs_8"
+MME_UETRACE_LIST="mme_uetrace:FIV1:15"
+MME_CTUM_LIST="mme_ctum:15"
+% endif
+
+% if deploymentType == 'NSS':
+<%text>################## LTE MCC MNC NRAT UE TRACE #################</%text>
+MCC_MNC="272F010"
+MCC_MNC_3GPP="72F2100"
+
+<%text>######################## CellTrace for MMEs ########################</%text>
+MME_EBS_FILE_LIST="1_ebs 2_ebs 3_ebs 4_ebs"
+MME_UETRACE_LIST="mme_uetrace:FIV1:1"
+MME_CTUM_LIST="mme_ctum:1"
+% endif
+
+<%text>###################### PM DIRECTORY #####################</%text>
+PMDIR="/netsim/genstats"
+
+<%text>########### SGSN-MME FILE COMPRESSION REQUIRED ############</%text>
+MME_FILE_COMP_NEEDED=YES
+
+<%text>########### APPLYING MULTI PROCESSING ############</%text>
+STATS_MAX_CONCURRENT=2
+
+% if deploymentType != 'NRM1.2':
+<%text>########### GPEH CONFIGURATION ############</%text>
+V_5_3878_RNC_P_VER=w13a
+V_4_3202_RNC_P_VER=w13a
+V_2_2693_RNC_P_VER=w13a
+V_7_1202_RNC_P_VER=w13a
+V_6_940_RNC_P_VER=w13a
+
+V_7_1202_RNC_FMT_VER=" 7- 2"
+V_8_1349_RNC_FMT_VER=" 7- 2"
+V_7_1543_RNC_FMT_VER=" 7- 2"
+V_7_1659_RNC_FMT_VER=" 7- 2"
+V_6_702_RNC_FMT_VER=" 7- 2"
+V_6_940_RNC_FMT_VER=" 7- 2"
+V_3_3141_RNC_FMT_VER=" 7- 2"
+V_5_3878_RNC_FMT_VER=" 7- 2"
+
+GPEH_CELLS_PER_MP=20
+RBS_GPEH_WORKLOAD_LIST="RNC01:1:33 RNC02:1:33 RNC03:1:33 RNC04:1:33 RNC05:1:33 RNC06:1:33 RNC07:1:33 RNC08:1:33 RNC09:1:33 RNC10:1:33 RNC11:1:33 RNC12:1:33 RNC13:1:33 RNC14:1:33 RNC15:1:33 RNC16:1:33 RNC17:1:33 RNC18:1:33 RNC19:1:33 RNC20:1:33 RNC21:1:33 RNC22:1:33"
+
+    % if deploymentType.startswith('NRM') or deploymentType.startswith('MD_1'):
+        GPEH_CELLS_PER_MP_CONFIG_LIST="01:22:10"
+        GPEH_WORKLOAD_LIST="15:max:20269794:40900000:12-18:01-05 15:max:20269794:40900000:12-18:06-15 15:max:20269794:40900000:12-18:16-22 15:default:20269794:24600000:0-11,19-23:01-05 15:default:20269794:24600000:0-11,19-23:06-15 15:default:20269794:24600000:0-11,19-23:16-22"
+        % if deploymentType == 'NRM5':
+            GPEH_MP_CONFIG_LIST="01:03:32,1 06:06:32,1 08:15:32,1 16:22:68,1 04:04:68,1 05:05:33,1 07:07:33,1"
+        % elif deploymentType == 'NRM5.1':
+            GPEH_MP_CONFIG_LIST="01:02:32,1 06:06:32,1 08:15:32,1 16:22:68,1 03:04:68,1 05:05:33,1 07:07:33,1"
+        % elif deploymentType == 'MD_1':
+            MSRBS_V2_GPEH_WORKLOAD_LIST="RNC01:1:33 RNC02:1:33 RNC03:1:33 RNC04:1:33 RNC05:1:33 RNC06:1:33 RNC07:1:33 RNC08:1:33 RNC09:1:33 RNC10:1:33 RNC11:1:33 RNC12:1:33 RNC13:1:33 RNC14:1:33 RNC15:1:33 RNC16:1:33 RNC17:1:33 RNC18:1:33 RNC19:1:33 RNC20:1:33 RNC21:1:33 RNC22:1:33"
+            GPEH_CELLS_PER_MP_CONFIG_LIST="01:40:10"
+            GPEH_WORKLOAD_LIST="15:max:20269794:40900000:12-18:01-05 15:max:20269794:40900000:12-18:06-15 15:max:20269794:40900000:12-18:16-22  15:max:20269794:40900000:12-18:23-40 15:default:20269794:24600000:0-11,19-23:01-05 15:default:20269794:24600000:0-11,19-23:06-15 15:default:20269794:24600000:0-11,19-23:16-22 15:default:20269794:24600000:0-11,19-23:23-40"
+            GPEH_MP_CONFIG_LIST="01:40:68,1"
+            RBS_GPEH_WORKLOAD_LIST="RNC01:1:33 RNC02:1:33 RNC03:1:33 RNC04:1:33 RNC05:1:33 RNC06:1:33 RNC07:1:33 RNC08:1:33 RNC09:1:33 RNC10:1:33 RNC11:1:33 RNC12:1:33 RNC13:1:33 RNC14:1:33 RNC15:1:33 RNC16:1:33 RNC17:1:33 RNC18:1:33 RNC19:1:33 RNC20:1:33 RNC21:1:33 RNC22:1:33 RNC23:1:33 RNC24:1:33 RNC25:1:33 RNC26:1:33 RNC27:1:33 RNC28:1:33 RNC29:1:33 RNC30:1:33 RNC31:1:33 RNC32:1:33 RNC33:1:33 RNC34:1:33 RNC35:1:33 RNC36:1:33 RNC37:1:33 RNC38:1:33 RNC39:1:33 RNC40:1:33"
+        % else:
+            GPEH_MP_CONFIG_LIST="01:05:33,1 06:10:32,1 11:15:32,1 16:20:68,1 21:22:68,1"
+        % endif
+
+GPEH_RBS_WORKLOAD="15"
+    % else:
+GPEH_CELLS_PER_MP_CONFIG_LIST="01:20:10"
+GPEH_MP_CONFIG_LIST="01:05:33,1 06:10:32,1 11:15:32,1 16:20:68,1"
+GPEH_RBS_WORKLOAD="1 15"
+GPEH_WORKLOAD_LIST="15:max:20269794:40435937:12-18:01-05 15:max:20269794:80871889:12-18:06-15 15:max:20269794:118275136:12-18:16-20 15:default:20269794:24999999:0-11,19-23:01-05 15:default:20269794:52418808:0-11,19-23:06-15 15:default:20269794:73728000:0-11,19-23:16-20 1:default:10134897:13130000:0-23:01-20"
+    % endif
+% endif
+
+<%text>########### Counter volume for NRM deployments ############</%text>
+REQUIRED_COUNTER_VOLUME="${counterVolume}"
+
+
+<%text>########### HLR-FE MP COUNT ############</%text>
+HLR_MP_COUNT=10
+HLR_MP_BC_COUNT=3
+
+<%text>########### GSM_REC_FILE_PATH ############</%text>
+GSM_MSC_BSC_MTR_FILE_DIR=/apfs/data_transfer/destinations/OSSMTR/Ready
+GSM_BSC_RIR_FILE_DIR=/apfs/data_transfer/destinations/OSSRIR/Ready
+GSM_BSC_BAR_FILE_DIR=/apfs/data_transfer/destinations/OSSBAR/Ready
+GSM_BSC_MRR_FILE_DIR=/apfs/data_transfer/destinations/OSSMRR/Ready
+GSM_BSC_CER_FILE_DIR=/apfs/data_transfer/destinations/OSSCER/Ready
+GSM_BSC_CTR_FILE_DIR=/apfs/data_transfer/destinations/OSSCTR/Ready
+

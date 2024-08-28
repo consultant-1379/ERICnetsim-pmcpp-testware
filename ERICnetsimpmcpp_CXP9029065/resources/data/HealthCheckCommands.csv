@@ -1,0 +1,2 @@
+command,expectedExitCode
+/netsim_users/hc/bin/genstat_report.sh,0

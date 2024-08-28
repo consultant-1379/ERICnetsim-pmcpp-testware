@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="GenericTestsSuite">
+	<test name="GenericTests">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.GenericTests"/>
+		</classes>
+	</test>
+</suite>

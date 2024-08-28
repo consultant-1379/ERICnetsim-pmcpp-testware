@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="PostInstallationSuite">
+	<test name="PostInstallationTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.PostInstallationTest"/>
+		</classes>
+	</test>
+</suite>

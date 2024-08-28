@@ -1,0 +1,2 @@
+command,expectedExitCode
+/netsim_users/auto_deploy/bin/cfgGenerator.py,0

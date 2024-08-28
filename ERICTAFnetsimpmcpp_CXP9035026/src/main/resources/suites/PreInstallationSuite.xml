@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="PreInstallationSuite">
+	<test name="PreInstallationTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.PreInstallationTest"/>
+		</classes>
+	</test>
+</suite>

@@ -1,0 +1,5 @@
+# Product Data config file:
+# NO will support MSRBS-V2 nodes for 4G and 5G in NSS/MT for hardcoded sim names only
+# YES will support MSRBS-V2 nodes for 2G, 3G, 4G and 5G in any deploymnet type - configured by modular utility job
+
+GENERATE_PD_FILES="NO"

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="GetEUtranDataSuite">
+	<test name="GetEUtranDataTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.GetEUtranDataTest"/>
+		</classes>
+	</test>
+</suite>

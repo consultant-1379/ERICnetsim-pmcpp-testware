@@ -1,0 +1,36 @@
+# This cfg file is used to configure the expected PM file sizes per node type to check with sizes of files being generated on a server.
+# FileExtensionType = <node type>:<min expected file size average>:<max expected file size average:<Number of files per node/folder>
+LTE MSRBS-V2:177:183:1:.xml.gz
+LTE ERBS:175:220:1:.xml.gz
+GNODEBRADIO:43:46:1:.xml.gz
+MTAS:155_175:170_190:1:.xml.gz
+M-MGW:175:185:1:.xml.gz
+EPG-OI:7105:7185:1:.xml.gz
+vEPG-OI:7105:7185:1:.xml.gz
+EPG-SSR:3069:3075:3:.xml.gz
+EPG-EVR:3069:3075:3:.xml.gz
+PCC:5080:5140:1:.xml.gz
+PCG:5080:5140:1:.xml.gz
+CCDM:505:520:1:.xml.gz
+R6672:251:257:1:.xml.gz
+R6675:251:257:1:.xml.gz
+R6274:251:257:1:.xml.gz
+vCU-CP:2355:2764:1:.xml.gz
+vCU-UP:389:440:1:.xml.gz
+vDU:35:41:1:.xml.gz
+FrontHaul-6020:27:33:1:.xml.gz
+RNC:5400:21504:1:.xml.gz
+SGSN:175:185:1:.xml.gz
+CCRC:505:520:1:.xml.gz
+CUDB:3.5:3.9:1:.xml
+DSC:48:51:1:.xml
+FrontHaul-6080:380:410:1:.xml
+SBG-IS:3050:3120:300:NO_EXT
+CSCF-TSP:2.0:3.9:1:NO_EXT
+HSS-FE-TSP:1.3:3.4:1:NO_EXT
+MTAS-TSP:1.4:1.5:1:NO_EXT
+SAPC-TSP:1:1.1:1:NO_EXT
+GNODEBRADIO_1:42:46:1:.xml.gz
+GNODEBRADIO_3:40:44:1:.xml.gz
+GNODEBRADIO_6:42:46:1:.xml.gz
+GNODEBRADIO_12:49:56:1:.xml.gz

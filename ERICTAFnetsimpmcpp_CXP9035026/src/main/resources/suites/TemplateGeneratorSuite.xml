@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="TemplateGeneratorSuite">
+	<test name="TemplateGeneratorTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.TemplateGeneratorTest"/>
+		</classes>
+	</test>
+</suite>

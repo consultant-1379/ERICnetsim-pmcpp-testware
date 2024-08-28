@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="GetSimulationDataSuite">
+	<test name="GetSimulationDataTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.GetSimulationDataTest"/>
+		</classes>
+	</test>
+</suite>

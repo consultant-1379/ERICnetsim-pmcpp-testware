@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="GenstatsCfgGenerationSuite">
+	<test name="GenstatsCfgGenerationTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.GenstatsCfgGenerationTest"/>
+		</classes>
+	</test>
+</suite>

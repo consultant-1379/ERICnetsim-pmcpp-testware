@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="ScannerTimeSyncSuite">
+	<test name="ScannerTimeSyncTest">
+		<classes>
+			<class name="com.ericsson.cifwk.netsim.test.cases.ScannerTimeSyncTest"/>
+		</classes>
+	</test>
+</suite>

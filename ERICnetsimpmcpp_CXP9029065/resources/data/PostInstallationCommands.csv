@@ -1,0 +1,2 @@
+command,expectedExitCode
+/netsim_users/pms/bin/post_execution.sh,0

@@ -1,0 +1,13 @@
+[
+    {
+        "hostname": "development-netsim",
+        "ip": "10.59.141.21",
+        "type": "unknown",
+        "users": [
+            {"username": "cloud", "password": "shroot", "type": "oper"},
+            {"username": "cloud", "password": "shroot", "type": "admin"}
+        ],
+
+        "ports": {"ssh": 22}
+    }
+]
